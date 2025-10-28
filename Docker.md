@@ -1,3 +1,3 @@
 ## to show docker version 
--- docker --version
+ docker --version
 
