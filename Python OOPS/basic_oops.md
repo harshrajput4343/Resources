@@ -4,6 +4,21 @@ author: You
 description: A concise-but-complete study and revision resource for Object-Oriented Programming (OOP) in Python with clear analogies, well‑commented examples, common pitfalls, best practices, and exam-focused questions.
 ---
 
+# What is OOP (definition)
+
+Object-Oriented Programming (OOP) is a way of organizing programs around objects—bundles of data (attributes) and behavior (methods)—instead of keeping data and functions separate. In Python, a class defines the blueprint, and an object (instance) is a concrete thing built from that blueprint. The core ideas are:
+- Encapsulation: keep related data and behavior together and control access.
+- Inheritance: reuse and extend existing classes.
+- Polymorphism: same interface, different implementations.
+- Abstraction: expose what’s essential, hide internal details.
+
+Why it’s useful (in simple terms):
+- Models the real world naturally (e.g., Car, Account, Order).
+- Reuse code safely (write once in a class, reuse across many objects).
+- Easier to maintain and change (localize changes inside classes).
+- Extensible designs (add new subclasses without touching stable code).
+- Team-friendly (clear boundaries and responsibilities per class/module).
+
 # Why OOP? Real‑world intuition
 
 - Think “blueprints and objects”: A class is a blueprint; an object is a house built from that blueprint.
@@ -33,6 +48,14 @@ Potential trade‑offs:
 - Inheritance: Create a new class reusing and extending an existing class.
 - Polymorphism: Same interface, different implementations (e.g., start() for Car vs Bike).
 - Abstraction: Expose what’s essential, hide implementation details (via ABCs in Python).
+
+More basics (simple terms):
+- self: The current object inside an instance method; Python passes it for you when you call obj.method().
+- cls: The class itself inside a classmethod; use it to build instances or access class-level data.
+- Instance variable vs Class variable: Instance variable lives on each object (different per object). Class variable lives on the class (shared by all objects).
+- Namespace: A mapping from names to objects (e.g., variables in a function form a function namespace).
+- Scope (LEGB): Where a name is looked up—Local, Enclosing, Global, Built-in.
+- Identity vs Equality: is checks same object (identity), == checks same value (equality).
 
 
 # 1) Classes and Objects
@@ -65,6 +88,19 @@ car2.stop()   # The Blue BMW is stopping.
 Notes:
 - self is the current object (like this in other languages). It’s passed automatically on instance method calls.
 - __init__ is called right after the object is created to set up initial state.
+
+
+# Prerequisites: concepts to know (easy mode)
+
+- Names point to objects: In Python, a variable name stores a reference to an object (not the object itself). Think “label → box”.
+- Every object has id, type, value: id is its identity (where it lives), type is its class, value is its data.
+- Mutability matters:
+    - Mutable: list, dict, set, most user-defined objects (can change in place).
+    - Immutable: int, float, str, tuple, frozenset (changing means a new object).
+- Function calls pass references: Arguments are passed by assignment (a reference is copied). Mutating a mutable argument changes the original.
+- Indentation is syntax: Class, function, and method bodies must be indented consistently (spaces recommended).
+- Scope rule (LEGB): Python resolves names in Local → Enclosing → Global → Builtins.
+- Modules and import: A .py file is a module; you import names from modules. Classes usually live in modules.
 
 
 # 2) Attributes and Methods
@@ -108,6 +144,29 @@ class Temperature:
 t1 = Temperature.from_fahrenheit(212)
 print(t1.celsius)               # 100.0
 print(Temperature.is_valid(25)) # True
+```
+
+### self vs cls in one minute
+
+```python
+class Demo:
+    kind = "shared"     # class variable (one copy)
+
+    def __init__(self, x):
+        self.x = x       # instance variable (per object)
+
+    @classmethod
+    def make_default(cls):
+        return cls(0)    # use the class (cls) to build an instance
+
+    @staticmethod
+    def helper(a, b):
+        return a + b     # no access to self or cls
+
+d = Demo(5)
+print(d.x)               # 5          (instance data)
+print(Demo.kind)         # shared     (class data)
+print(Demo.make_default().x)  # 0     (built via cls)
 ```
 
 
@@ -650,10 +709,26 @@ Order Checkout (strategy polymorphism): see section 12.
 
 # 20) Quick self‑check
 
-- Can you explain the difference among instance, class, and static methods with examples?  
-- Can you write an ABC and a concrete subclass?  
-- Can you explain why Python doesn’t do compile‑time overloading and what to use instead?  
+- Can you explain the difference among instance, class, and static methods with examples?
+    Answer (easy terms):
+    - Instance method: gets self (the current object). Use it when behavior depends on object data. Example: car.start().
+    - Class method: gets cls (the class). Use it for alternate constructors or class-wide logic. Example: Temperature.from_fahrenheit().
+    - Static method: gets neither. Use it for utility functions that logically belong to the class but don’t need object/class data.
+
+- Can you write an ABC and a concrete subclass?
+    Answer: Yes—define a class inheriting from abc.ABC and decorate required methods with @abstractmethod. Any subclass must implement them. See section 6 for Vehicle (ABC) and Car/Bike (concrete subclasses).
+
+- Can you explain why Python doesn’t do compile‑time overloading and what to use instead?
+    Answer: Python is dynamically typed and keeps only the last method definition with the same name. Instead, use default parameters, *args/**kwargs, or @functools.singledispatch for function-style overloading.
+
 - Can you decide between composition and inheritance for a given design?
+    Answer: Prefer composition (HAS‑A) when you just want to reuse behavior without tightly coupling types. Use inheritance (IS‑A) when the subclass truly “is a” specialized form of the base and should share its interface.
+
+- Bonus: What’s the difference between instance and class variables?
+    Answer: Instance variables live on each object and can differ per object. Class variables live on the class and are shared by all objects unless overridden on an instance.
+
+- Bonus: What’s the difference between is and ==?
+    Answer: is checks whether two names point to the exact same object (identity). == checks whether values are equal (uses __eq__).
 
 
-If you want, we can convert this into a printable PDF “cheat sheet” or add more exam-style problems with detailed solutions.
+
