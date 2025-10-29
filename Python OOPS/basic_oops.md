@@ -1,6 +1,6 @@
 ---
 title: Python OOP – Complete Revision Guide with Real‑World Analogies, Code, and Exam Questions
-author: You
+author: HarshRajput
 description: A concise-but-complete study and revision resource for Object-Oriented Programming (OOP) in Python with clear analogies, well‑commented examples, common pitfalls, best practices, and exam-focused questions.
 ---
 
